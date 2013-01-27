@@ -12,7 +12,7 @@ describe "User pages" do
     let(:submit) {"Create my account"}
     describe "with invalid information" do
         it "should not create a user" do 
-            expect {click_button submit}.to_not change(User, :count)
+            expect {click_button submit}.not_to change(User, :count)
         end
         describe "after submission" do 
           before { click_button submit }
@@ -29,6 +29,14 @@ describe "User pages" do
         end
         it "should create a user" do
             expect {click_button submit}.to change(User, :count).by(1)
+        end
+        describe "should login after save" do
+            before {click_button submit}
+            it { should have_link("Sign out") }
+            describe "followed by signout" do
+              before {click_link "Sign out" }
+              it { should have_link('Sign in') }
+            end
         end
     end
 
