@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe "User pages" do
 
+  before(:all) { 30.times { FactoryGirl.create(:station) } }
+  after(:all)  { Station.delete_all }    
+
   subject { page }
 
   describe "index page" do
