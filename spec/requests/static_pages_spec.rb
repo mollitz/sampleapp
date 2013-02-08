@@ -10,9 +10,11 @@ describe "Static pages" do
     it {should_not have_select('title', :text => "|")}
     describe "for signed-in users" do
       let(:user) {FactoryGirl.create(:user)}
+      let(:otheruser) {FactoryGirl.create(:user, name: 'asdf')}
       before do
         FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
         FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+
         sign_in user
         visit root_path
       end
@@ -21,6 +23,13 @@ describe "Static pages" do
           page.should have_selector("li##{item.id}", text: item.content)
         end
       end
+      it "should display the feed count" do
+        page.should have_content(user.microposts.count.to_s + ' micropost' + ('s' if user.microposts.count > 1))
+      end
+      it "should have a char counter" do
+        page.should have_selector("span.counter", text: "Characters")
+      end
+                                          
     end
   end
   
