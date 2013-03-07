@@ -14,7 +14,6 @@ describe "Static pages" do
       before do
         FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
         FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
-
         sign_in user
         visit root_path
       end
@@ -30,6 +29,8 @@ describe "Static pages" do
         page.should have_selector("span.counter", text: "Characters")
       end
                                           
+      it {should have_link "0 following", href: following_user_path(user)}
+      it {should have_link "1 followers", href: followers_user_path(user)}
     end
   end
   
