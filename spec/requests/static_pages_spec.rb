@@ -10,10 +10,11 @@ describe "Static pages" do
     it {should_not have_select('title', :text => "|")}
     describe "for signed-in users" do
       let(:user) {FactoryGirl.create(:user)}
-      let(:otheruser) {FactoryGirl.create(:user, name: 'asdf')}
+      let(:other_user) {FactoryGirl.create(:user, name: 'asdf')}
       before do
         FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
         FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        other_user.follow!(user)
         sign_in user
         visit root_path
       end
