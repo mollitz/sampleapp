@@ -7,8 +7,7 @@
 #  email      :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#
-
+# 
 require 'spec_helper'
 
 describe User do
@@ -138,9 +137,15 @@ describe User do
       let(:unfollowed_post) do
         FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
       end
+      let(:other_user) {FactoryGirl.create(:user)}
+      let(:followed_post) {other_user.microposts.create!(content: 'Lorem ipsum')}
+      before do
+        @user.follow!(other_user)
+      end
       its(:feed) {should include(newer_post) }
       its(:feed) {should include(older_post) }
       its(:feed) {should_not include(unfollowed_post) }
+      its(:feed) {should include(followed_post) }
     end
 
   end
